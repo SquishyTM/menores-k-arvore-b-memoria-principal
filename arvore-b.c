@@ -229,9 +229,30 @@ void particiona(TNo *P, int d, int pos, int chave, TNo *pt) {
     P->m = d;
 }
 
-TLista *menor_k(TNo *raiz, int k) {
-    //TODO: Implementar essa funcao
+TLista *auxiliar_menor_k(TNo *no, int k, TLista *lista) {
 
+    if (no == NULL) {
+        return lista;
+    }
+
+    for (int i = 0; i < no->m; i++) {
+        lista = auxiliar_menor_k(no->p[i], k, lista);
+        
+        if (no->s[i] < k) {
+            lista = insere_ordenado(lista, no->s[i]);
+        } else {
+            return lista;
+        }
+    }
+
+    lista = auxiliar_menor_k(no->p[no->m], k, lista);
+    
+    return lista;
+}
+
+TLista *menor_k(TNo *raiz, int k) {
+
+    return auxiliar_menor_k(raiz, k, NULL);
 }
 
 int main(int argc, char *argv[]) {
